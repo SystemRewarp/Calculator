@@ -14,12 +14,12 @@ st.text_input(
     disabled=True
 )
 
-# Button layout
 buttons = [
     ["7", "8", "9", "/"],
     ["4", "5", "6", "*"],
     ["1", "2", "3", "-"],
-    ["0", "C", "=", "+"]
+    ["0", ".", "C", "+"],
+    ["="]
 ]
 
 for row in buttons:
