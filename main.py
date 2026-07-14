@@ -3,14 +3,18 @@ import streamlit as st
 st.title("Calculator")
 st.write("---")
 
-# Store the current number/expression
+# Create expression if it doesn't exist
 if "expression" not in st.session_state:
     st.session_state.expression = ""
 
-# Display current expression
-st.text_input("Display", value=st.session_state.expression, disabled=True)
+# Display
+st.text_input(
+    "Display",
+    value=st.session_state.expression,
+    disabled=True
+)
 
-# Calculator buttons
+# Button layout
 buttons = [
     ["7", "8", "9", "/"],
     ["4", "5", "6", "*"],
@@ -22,7 +26,8 @@ for row in buttons:
     cols = st.columns(4)
 
     for i, button in enumerate(row):
-        if cols[i].button(button):
+        if cols[i].button(button, use_container_width=True):
+
             if button == "C":
                 st.session_state.expression = ""
 
@@ -36,9 +41,5 @@ for row in buttons:
             else:
                 st.session_state.expression += button
 
-# Update display
-st.text_input(
-    "Result",
-    value=st.session_state.expression,
-    disabled=True
-)
+            # Refresh immediately so the display updates
+            st.rerun()
