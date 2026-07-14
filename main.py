@@ -1,31 +1,44 @@
 import streamlit as st
 
-st.title('Calculator')
-st.write('---')
+st.title("Calculator")
+st.write("---")
 
-num1 = st.number_input(label='Enter First Number')
-num2 = st.number_input(label='Enter Second Number')
+# Store the current number/expression
+if "expression" not in st.session_state:
+    st.session_state.expression = ""
 
-st.write('Operation')
-operation = st.radio('Select an operation to perform',
-                     ('Add', 'Subtract', 'Multiply', 'Divide'))
-ans = 0
- 
-def calculate():
-    if operation == 'Add':
-        ans = num1 + num2
-    elif operation == 'Subtract':
-        ans = num1 - num2
-    elif operation == 'Multiply':
-        ans = num1 * num2
-    elif operation=='Divide' and num2!=0:
-        ans = num1 / num2
-    else:
-        st.warning('Division by 0 error. Please enter a non-zero number.')
-        ans = 'Not defined'
- 
-    st.success(f"Answer = {ans}")
+# Display current expression
+st.text_input("Display", value=st.session_state.expression, disabled=True)
 
-if st.button('Calculate result'):
-    calculate()
+# Calculator buttons
+buttons = [
+    ["7", "8", "9", "/"],
+    ["4", "5", "6", "*"],
+    ["1", "2", "3", "-"],
+    ["0", "C", "=", "+"]
+]
 
+for row in buttons:
+    cols = st.columns(4)
+
+    for i, button in enumerate(row):
+        if cols[i].button(button):
+            if button == "C":
+                st.session_state.expression = ""
+
+            elif button == "=":
+                try:
+                    result = eval(st.session_state.expression)
+                    st.session_state.expression = str(result)
+                except:
+                    st.session_state.expression = "Error"
+
+            else:
+                st.session_state.expression += button
+
+# Update display
+st.text_input(
+    "Result",
+    value=st.session_state.expression,
+    disabled=True
+)
